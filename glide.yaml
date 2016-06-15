@@ -1,0 +1,11 @@
+package: github.com/mies/todo-api
+import:
+- package: github.com/golang/protobuf
+  subpackages:
+  - /proto
+- package: github.com/gorilla/mux
+- package: golang.org/x/net
+  subpackages:
+  - /context
+- package: google.golang.org/grpc
+- package: gopkg.in/urfave/cli.v1

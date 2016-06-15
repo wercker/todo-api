@@ -1,0 +1,22 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: todo-api
+  labels:
+    name: todo-api
+spec:
+  replicas: ${TPL_REPLICAS:-3}
+  template:
+    metadata:
+      labels:
+        name: todo-api
+    spec:
+      containers:
+      - name: todo-api
+        image: gcr.io/modular-terra-131010/todo-api:${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT}
+        args: ["start"]
+        ports:
+        - name: http-server
+          containerPort: 3000 
+          protocol: TCP

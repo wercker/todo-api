@@ -1,0 +1,49 @@
+hash: 3f69ae4446c8575baea611d419d4c69f8fbe1766f9463ea3ff45e44471e84e76
+updated: 2016-06-06T17:53:43.2073404+02:00
+imports:
+- name: github.com/codegangsta/cli
+  version: edb24d02aa3cea2319c33f2836d4a5133907fe4c
+- name: github.com/golang/glog
+  version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
+  repo: https://github.com/golang/glog
+- name: github.com/golang/protobuf
+  version: 3b06fc7a4cad73efce5fe6217ab6c33e7231ab4a
+  subpackages:
+  - /proto
+- name: github.com/gorilla/context
+  version: aed02d124ae4a0e94fea4541c8effd05bf0c8296
+- name: github.com/gorilla/mux
+  version: 9fa818a44c2bf1396a17f9d5a3c0f6dd39d2ff8e
+- name: github.com/urfave/cli
+  version: edb24d02aa3cea2319c33f2836d4a5133907fe4c
+  repo: https://github.com/urfave/cli
+- name: golang.org/x/crypto
+  version: 89d9e62992539701a49a19c52ebb33e84cbbe80f
+  repo: https://golang.org/x/crypto
+- name: golang.org/x/net
+  version: c4c3ea71919de159c9e246d7be66deb7f0a39a58
+  subpackages:
+  - /context
+- name: golang.org/x/oauth2
+  version: c406a4cc4ba462e5dc2f16225c5bd9488f9cbe10
+  repo: https://golang.org/x/oauth2
+- name: golang.org/x/text
+  version: a4d77b4813ec88686efd8caedc113322933f9891
+  repo: https://golang.org/x/text
+- name: google.golang.org/api
+  version: 63ade871fd3aec1225809d496e81ec91ab76ea29
+  repo: https://google.golang.org/api
+- name: google.golang.org/appengine
+  version: 7f59a8c76b8594d06044bfe0bcbe475cb2020482
+  repo: https://google.golang.org/appengine
+- name: google.golang.org/cloud
+  version: 0bf7a0795c591c70a17505c1123bc3ef3d30f426
+  repo: https://google.golang.org/cloud
+- name: google.golang.org/grpc
+  version: ce6213360cb8fadd0b08f9513406176ec931c5f7
+- name: gopkg.in/urfave/cli.v1
+  version: 01857ac33766ce0c93856370626f9799281c14f4
+- name: gopkg.in/yaml.v2
+  version: a83829b6f1293c91addabc89d0571c246397bbf4
+  repo: https://gopkg.in/yaml.v2
+devImports: []

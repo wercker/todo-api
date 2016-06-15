@@ -1,0 +1,87 @@
+box: golang:1.6
+build:
+  base-path: /go/src/github.com/mies/todo-api
+  steps:
+    - script:
+        name: go vet
+        code: |
+            go vet github.com/mies/todo-api
+            
+    - glide-install
+
+    - script:
+        name: go build
+        code: >
+            CGO_ENABLED=0
+            go build
+            -installsuffix cgo
+            -o $WERCKER_OUTPUT_DIR/todo-api
+    - script:
+        name: forward deployment scripts
+        code: cp -r deployment $WERCKER_OUTPUT_DIR/deployment
+
+push-gcr:
+  box:
+    id: alpine
+    cmd: /bin/sh
+  steps:
+    - script:
+        name: install apk packages
+        code: |
+          echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
+          apk update && apk add ca-certificates
+    - script:
+        name: move todo-api
+        code: mv todo-api /todo-api
+
+    - script:
+        name: forward deployment scripts
+        code: cp -r deployment $WERCKER_OUTPUT_DIR/deployment
+
+    - script:
+        name: prune
+        code: rm -rfv /pipeline/source /pipeline/cache /pipeline/script-*
+
+    - internal/docker-push:
+        repository: gcr.io/$GKE_PROJECT_ID/todo-api
+        registry: https://gcr.io
+        username: _json_key
+        password: $GCR_JSON_KEY_FILE
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        ports: 3000
+        entrypoint: /todo-api
+
+gke-deploy:
+  steps:
+    - create-file:
+      name: Create ca.pem
+      cwd: deployment
+      filename: ca.pem
+      content: $GKE_CA_PEM
+
+    - create-file:
+      name: Create admin.pem
+      cwd: deployment
+      filename: admin.pem
+      content: $GKE_ADMIN_PEM
+
+    - create-file:
+      name: Create admin-key.pem
+      cwd: deployment
+      filename: admin-key.pem
+      content: $GKE_ADMIN_KEY_PEM
+
+    - script:
+      name: generating kube file
+      cwd: deployment
+      code: |
+        cat todo-api.yml >> todo-kube.yml
+        ./t.sh todo-deployment.template.yml >> todo-kube.yml
+        cat todo-kube.yml
+    - kubectl:
+      cwd: deployment
+      server: $GKE_KUBERNETES_MASTER
+      certificate-authority: ca.pem
+      client-certificate: admin.pem
+      client-key: admin-key.pem
+      command: apply -f todo-kube.yml
